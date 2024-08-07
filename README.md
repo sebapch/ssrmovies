@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Movie Recommendation Application
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This is a modern, high-performance movie recommendation application built with Next.js, TypeScript, and Redux Toolkit. It leverages The Movie Database (TMDb) API to provide users with an engaging platform to discover and explore movies.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Server-Side Rendering (SSR)**: Utilizes Next.js for improved performance and SEO.
+- **Search Functionality**: Allows users to search for movies by title, genre, or other criteria.
+- **Movie Details**: Displays comprehensive information about selected movies.
+- **Similar Movies**: Recommends movies based on the user's selections.
+- **Responsive Design**: Ensures a seamless experience across various devices and screen sizes.
+- **State Management**: Uses Redux Toolkit for efficient client-side state management.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technical Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Frontend Framework**: Next.js (App Router)
+- **Language**: TypeScript
+- **State Management**: Redux Toolkit
+- **Styling**: Tailwind CSS
+- **API Calls**: Axios
+- **API**: The Movie Database (TMDb)
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+The application follows a hybrid approach, combining server-side rendering with client-side state management:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Server Components**: Handle initial data fetching and rendering.
+2. **Client Components**: Manage dynamic updates and user interactions.
+3. **Redux Store**: Centralizes state management for client-side operations.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Key Components
 
-## Deploy on Vercel
+- `app/page.tsx`: Home page with popular movies
+- `app/search/page.tsx`: Search results page
+- `app/movie/[id]/page.tsx`: Individual movie details page
+- `lib/features/movieSlice.ts`: Redux slice for movie-related state
+- `components/MovieListWrapper.tsx`: Client-side wrapper for movie lists
+- `components/SearchResultsWrapper.tsx`: Client-side wrapper for search results
+- `components/MovieDetailsWrapper.tsx`: Client-side wrapper for movie details
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Setup and Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up environment variables:
+   - Create a `.env.local` file
+   - Add your TMDb API key: `TMDB_API_KEY=your_api_key_here`
+4. Run the development server: `npm run dev`
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Scripts
+
+- `npm run dev`: Starts the development server
+- `npm run build`: Builds the application for production
+- `npm start`: Runs the built application
+- `npm run lint`: Runs the linter
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
