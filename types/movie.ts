@@ -17,5 +17,7 @@ export interface Genre {
     revenue: number;
     original_language: string;
     trailer?: { key: string };
+    backdrop_path?: { key: string };
+    tagline?: string ;
   }
   
