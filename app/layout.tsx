@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import Navbar from "../components/Navbar";
+import SessionWrapper from "./SessionWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <StoreProvider>
-          <main className="container mx-auto px-4 py-8">
-            {children}
-          </main>
-        </StoreProvider>
+        <SessionWrapper>
+          <Navbar />
+          <StoreProvider>
+            <main className="container mx-auto px-4 py-8">
+              {children}
+            </main>
+          </StoreProvider>
+        </SessionWrapper>
       </body>
     </html>
   );
