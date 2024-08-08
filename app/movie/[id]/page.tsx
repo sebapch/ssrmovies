@@ -29,6 +29,22 @@ export default async function MovieDetails({ params }: { params: { id: string } 
           </p>
           <h2 className="text-2xl font-semibold mb-2">Synopsis</h2>
           <p className="text-lg mb-6">{movie.overview}</p>
+
+          {movie.trailer && (
+            <div className="mb-6">
+              <h2 className="text-2xl font-semibold mb-2">Trailer</h2>
+              <iframe
+                width="560"
+                height="315"
+                src={`https://www.youtube.com/embed/${movie.trailer.key}`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          )}
+
           <div>
             <h2 className="text-2xl font-semibold mb-2">Additional Information</h2>
             <p className="text-lg mb-1"><span className="font-semibold">Runtime:</span> {movie.runtime} minutes</p>

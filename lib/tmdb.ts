@@ -23,13 +23,19 @@ export async function getPopularMovies() {
 
 export async function getMovieDetails(movieId: string): Promise<Movie | null> {
   try {
-    const response = await axios.get<Movie>(`${BASE_URL}/movie/${movieId}`, {
+    const movieResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}`, {
       params: {
         api_key: API_KEY,
-        language: 'en-US',
+        append_to_response: 'videos',
       },
     });
-    return response.data;
+
+    const movie = movieResponse.data;
+    const trailer = movie.videos.results.find(
+      (video: { type: string; site: string }) => video.type === 'Trailer' && video.site === 'YouTube'
+    );
+
+    return { ...movie, trailer };
   } catch (error) {
     console.error('Error fetching movie details:', error);
     return null;
