@@ -23,6 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <SessionWrapper>
           <Navbar />
+          
           <StoreProvider>
             <main className="container mx-auto px-4 py-8">
               {children}

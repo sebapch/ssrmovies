@@ -2,6 +2,11 @@ import React, { Suspense } from 'react';
 import { getMovieDetails } from '../../../lib/tmdb';
 import { Movie } from '../../../types/movie';
 import SimilarMovies from '@/components/SimilarMovies';
+import dynamic from 'next/dynamic';
+import SearchBar from '@/components/SearchBar';
+
+const FavoriteButton = dynamic(() => import('@/components/FavoriteButton'), { ssr: false });
+
 
 export default async function MovieDetails({ params }: { params: { id: string } }) {
   const movie: Movie | null = await getMovieDetails(params.id);
@@ -13,28 +18,35 @@ export default async function MovieDetails({ params }: { params: { id: string } 
     </div>
   );
 
+  const placeholderSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%23333'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='14px' fill='%23fff'%3ENo image found%3C/text%3E%3C/svg%3E`;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+       
       <div className="container mx-auto px-4 py-12">
+      <SearchBar />
         <div className="relative mb-12">
           <img
             src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
             alt={`${movie.title} backdrop`}
             className="w-full h-96 object-cover rounded-xl opacity-30"
+     
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
           <div className="absolute bottom-0 left-0 p-8">
             <h1 className="text-5xl font-bold mb-2 text-shadow-lg">{movie.title}</h1>
             <p className="text-xl mb-4 text-shadow-md">{movie.tagline}</p>
+            <FavoriteButton movie={movie} />
           </div>
         </div>
-
+         
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/3">
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt={movie.title}
               className="w-full rounded-xl shadow-2xl transform hover:scale-105 transition duration-300 mb-6"
+      
             />
             <div className="bg-gray-800 rounded-xl p-6 shadow-xl">
               <InfoItem title="Release Date" value={new Date(movie.release_date).toLocaleDateString()} />
