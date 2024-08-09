@@ -4,6 +4,7 @@ import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import Navbar from "../components/Navbar";
 import SessionWrapper from "./SessionWrapper";
+import FavoritesBar from "@/components/FavoritesBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
             <main className="container mx-auto px-4 py-8">
               {children}
             </main>
+            <FavoritesBar />
           </StoreProvider>
         </SessionWrapper>
       </body>

@@ -1,24 +1,44 @@
+'use client'
+
 import { Movie } from "../types/movie";
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { options } from "../app/api/auth/[...nextauth]/options";
+import { useSession } from "next-auth/react";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../lib/store';
+import { addFavoriteMovie, removeFavoriteMovie } from '../lib/favoriteMoviesSlice';
+import { useEffect } from 'react';
 
 interface MovieListProps {
   movies: Movie[];
 }
 
-export default async function MovieList({ movies }: MovieListProps) {
-  const session = await getServerSession(options);
+export default function MovieList({ movies }: MovieListProps) {
+  const { data: session } = useSession();
+  const dispatch = useDispatch();
+  const favoriteMovies = useSelector((state: RootState) => state.favoriteMovies.movies);
+
+  useEffect(() => {
+    console.log('Favorite Movies:', favoriteMovies);
+  }, [favoriteMovies]);
+
+  const handleFavoriteClick = (e: React.MouseEvent, movie: Movie) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (favoriteMovies.some(m => m.id === movie.id)) {
+      dispatch(removeFavoriteMovie(movie.id));
+    } else {
+      dispatch(addFavoriteMovie(movie));
+    }
+  };
 
   if (movies.length === 0) {
     return <p>No movies found.</p>;
   }
 
-  console.log(session)
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6 text-black">
       {movies.map((movie) => (
-        <Link href={`/movie/${movie.id}`} key={movie.id} className="block">
+        <Link href={`/movie/${movie.id}`} key={movie.id} className="block relative">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
             <div className="relative">
               <img
@@ -71,25 +91,30 @@ export default async function MovieList({ movies }: MovieListProps) {
                 </div>
               </div>
             </div>
-            {session && (
-              <label className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`h-6 w-6 text-gray-400'}`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </label>
-            )}
           </div>
+          {session && (
+            <button
+              onClick={(e) => handleFavoriteClick(e, movie)}
+              className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-md"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-6 w-6 ${
+                  favoriteMovies.some(m => m.id === movie.id) ? 'text-red-500' : 'text-gray-400'
+                }`}
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            </button>
+          )}
         </Link>
       ))}
     </div>
